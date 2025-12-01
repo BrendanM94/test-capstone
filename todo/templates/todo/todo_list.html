@@ -7,6 +7,24 @@
 <body>
     <h1>My To-Dos</h1>
 
+    <!-- Add new todo form -->
+    <form method="post">
+        {% csrf_token %}
+        <div>
+            <label for="id_title">Title:</label>
+            <input id="id_title" type="text" name="title" required placeholder="What do you need to do?">
+        </div>
+        <div>
+            <label for="id_description">Description (optional):</label><br>
+            <textarea id="id_description" name="description" rows="3" cols="40"
+                      placeholder="Any details you want to remember?"></textarea>
+        </div>
+        <button type="submit">Add To-Do</button>
+    </form>
+
+    <hr>
+
+    <!-- Show existing todos -->
     {% if todos %}
         <ul>
         {% for item in todos %}
@@ -14,13 +32,13 @@
                 {% if item.completed %}✅{% else %}⬜{% endif %}
                 <strong>{{ item.title }}</strong>
                 {% if item.description %}
-                    - {{ item.description }}
+                    – {{ item.description }}
                 {% endif %}
             </li>
         {% endfor %}
         </ul>
     {% else %}
-        <p>No to-dos yet. Go add some in the admin!</p>
+        <p>No to-dos yet. Add one above!</p>
     {% endif %}
 </body>
 </html>
