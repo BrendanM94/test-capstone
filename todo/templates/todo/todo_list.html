@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Sandbox To-Do List</title>
+</head>
+<body>
+    <h1>My To-Dos</h1>
+
+    {% if todos %}
+        <ul>
+        {% for item in todos %}
+            <li>
+                {% if item.completed %}✅{% else %}⬜{% endif %}
+                <strong>{{ item.title }}</strong>
+                {% if item.description %}
+                    - {{ item.description }}
+                {% endif %}
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No to-dos yet. Go add some in the admin!</p>
+    {% endif %}
+</body>
+</html>
