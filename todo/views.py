@@ -23,3 +23,8 @@ def todo_complete(request, pk):
     todo.completed = True
     todo.save()
     return redirect("todo_list")
+
+def todo_delete(request, pk):
+    todo = Todo.objects.get(pk=pk)
+    todo.delete()
+    return redirect("todo_list")

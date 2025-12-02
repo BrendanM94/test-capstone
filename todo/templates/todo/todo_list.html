@@ -30,11 +30,14 @@
         {% for item in todos %}
            <li>
     {% if item.completed %}
-        ✅ <strong>{{ item.title }}</strong>
+    ✅ <strong>{{ item.title }}</strong>
+    <a href="{% url 'todo_delete' item.id %}" style="color:red;">Delete</a>
     {% else %}
-        ⬜ <strong>{{ item.title }}</strong>
-        <a href="{% url 'todo_complete' item.id %}">Mark complete</a>
-    {% endif %}
+    ⬜ <strong>{{ item.title }}</strong>
+    <a href="{% url 'todo_complete' item.id %}">Mark complete</a>
+    <a href="{% url 'todo_delete' item.id %}" style="color:red;">Delete</a>
+{% endif %}
+
 
     {% if item.description %}
         – {{ item.description }}
