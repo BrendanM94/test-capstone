@@ -5,6 +5,23 @@
     <title>My Sandbox To-Do List</title>
 </head>
 <body>
+    <div>
+        {% if user.is_authenticated %}
+            <p>
+                Logged in as {{ user.username }} |
+                <form method="post" action="{% url 'logout' %}" style="display:inline;">
+    {% csrf_token %}
+    <button type="submit">Log out</button>
+</form>
+
+            </p>
+        {% else %}
+            <p>
+                <a href="{% url 'login' %}">Log in</a>
+            </p>
+        {% endif %}
+    </div>
+
     <h1>My To-Dos</h1>
 
     <!-- Add new todo form -->
