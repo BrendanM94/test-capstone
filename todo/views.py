@@ -37,3 +37,15 @@ def todo_delete(request, pk):
     todo = Todo.objects.get(pk=pk)
     todo.delete()
     return redirect("todo_list")
+
+@login_required
+def todo_edit(request, pk):
+    todo = Todo.objects.get(pk=pk, user=request.user)
+
+    if request.method == "POST":
+        todo.title = request.POST.get("title")
+        todo.description = request.POST.get("description", "")
+        todo.save()
+        return redirect("todo_list")
+
+    return render(request, "todo/todo_edit.html", {"todo": todo})

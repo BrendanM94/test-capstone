@@ -10,10 +10,9 @@
             <p>
                 Logged in as {{ user.username }} |
                 <form method="post" action="{% url 'logout' %}" style="display:inline;">
-    {% csrf_token %}
-    <button type="submit">Log out</button>
-</form>
-
+                    {% csrf_token %}
+                    <button type="submit">Log out</button>
+                </form>
             </p>
         {% else %}
             <p>
@@ -45,23 +44,18 @@
     {% if todos %}
         <ul>
         {% for item in todos %}
-           <li>
-    {% if item.completed %}
-    ✅ <strong>{{ item.title }}</strong>
-    <a href="{% url 'todo_delete' item.id %}" style="color:red;">Delete</a>
-    {% else %}
-    ⬜ <strong>{{ item.title }}</strong>
-    <a href="{% url 'todo_complete' item.id %}">Mark complete</a>
-    <a href="{% url 'todo_delete' item.id %}" style="color:red;">Delete</a>
-{% endif %}
-
-
-    {% if item.description %}
-        – {{ item.description }}
-    {% endif %}
-</li>
-                {% if item.description %}
-                    – {{ item.description }}
+            <li>
+                {% if item.completed %}
+                    ✅ <strong>{{ item.title }}</strong>
+                    {% if item.description %} – {{ item.description }} {% endif %}
+                    <a href="{% url 'todo_edit' item.id %}">Edit</a>
+                    <a href="{% url 'todo_delete' item.id %}" style="color:red;">Delete</a>
+                {% else %}
+                    ⬜ <strong>{{ item.title }}</strong>
+                    {% if item.description %} – {{ item.description }} {% endif %}
+                    <a href="{% url 'todo_complete' item.id %}">Mark complete</a>
+                    <a href="{% url 'todo_edit' item.id %}">Edit</a>
+                    <a href="{% url 'todo_delete' item.id %}" style="color:red;">Delete</a>
                 {% endif %}
             </li>
         {% endfor %}
