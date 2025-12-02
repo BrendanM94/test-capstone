@@ -28,7 +28,11 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = "DEVELOPMENT" in os.environ
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+    "pacific-anchorage-48664-456200ed864e.herokuapp.com",
+]
 
 
 # Application definition
