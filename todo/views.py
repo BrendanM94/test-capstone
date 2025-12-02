@@ -17,3 +17,9 @@ def todo_list(request):
     # GET request: just show the list
     todos = Todo.objects.all().order_by("-created_at")
     return render(request, "todo/todo_list.html", {"todos": todos})
+
+def todo_complete(request, pk):
+    todo = Todo.objects.get(pk=pk)
+    todo.completed = True
+    todo.save()
+    return redirect("todo_list")

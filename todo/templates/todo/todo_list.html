@@ -28,9 +28,18 @@
     {% if todos %}
         <ul>
         {% for item in todos %}
-            <li>
-                {% if item.completed %}✅{% else %}⬜{% endif %}
-                <strong>{{ item.title }}</strong>
+           <li>
+    {% if item.completed %}
+        ✅ <strong>{{ item.title }}</strong>
+    {% else %}
+        ⬜ <strong>{{ item.title }}</strong>
+        <a href="{% url 'todo_complete' item.id %}">Mark complete</a>
+    {% endif %}
+
+    {% if item.description %}
+        – {{ item.description }}
+    {% endif %}
+</li>
                 {% if item.description %}
                     – {{ item.description }}
                 {% endif %}
