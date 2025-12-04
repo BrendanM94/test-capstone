@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>My Sandbox To-Do List</title>
 
     <!-- Bootstrap CDN -->
@@ -12,109 +13,114 @@
 
 <body class="bg-light">
 
-<div class="container mt-4">
+<!-- OUTER: full width for mobile -->
+<div class="container-fluid mt-5">
 
-    <!-- Header / Login status -->
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2 class="mb-0">My To-Dos</h2>
+    <!-- INNER: centered box on desktop, full width on mobile -->
+    <div class="mx-auto" style="max-width: 700px; width: 100%;">
 
-        {% if user.is_authenticated %}
-            <div>
-                <span class="me-2">Logged in as <strong>{{ user.username }}</strong></span>
+        <!-- Header / Login status -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="mb-0">My To-Dos</h2>
 
-                <!-- Logout must be POST form -->
-                <form method="post" action="{% url 'logout' %}" style="display:inline;">
+            {% if user.is_authenticated %}
+                <div>
+                    <span class="me-2">Logged in as <strong>{{ user.username }}</strong></span>
+
+                    <form method="post" action="{% url 'logout' %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-danger btn-sm">
+                            Log out
+                        </button>
+                    </form>
+                </div>
+            {% else %}
+                <a href="{% url 'login' %}" class="btn btn-primary btn-sm">Log in</a>
+            {% endif %}
+        </div>
+
+        <!-- Add new todo form -->
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <form method="post">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-outline-danger btn-sm">
-                        Log out
-                    </button>
+
+                    <div class="mb-3">
+                        <label for="id_title" class="form-label">Title</label>
+                        <input id="id_title" type="text" name="title"
+                               class="form-control" required
+                               placeholder="What do you need to do?">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="id_description" class="form-label">Description (optional)</label>
+                        <textarea id="id_description" name="description"
+                                  class="form-control" rows="3"
+                                  placeholder="Any extra details?"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-success w-100">Add To-Do</button>
                 </form>
             </div>
-        {% else %}
-            <div>
-                <a href="{% url 'login' %}" class="btn btn-primary btn-sm">Log in</a>
-            </div>
-        {% endif %}
-    </div>
-
-    <!-- Add new todo form -->
-    <div class="card mb-4">
-        <div class="card-body">
-            <form method="post">
-                {% csrf_token %}
-
-                <div class="mb-3">
-                    <label for="id_title" class="form-label">Title</label>
-                    <input id="id_title" type="text" name="title"
-                           class="form-control" required
-                           placeholder="What do you need to do?">
-                </div>
-
-                <div class="mb-3">
-                    <label for="id_description" class="form-label">Description (optional)</label>
-                    <textarea id="id_description" name="description"
-                              class="form-control" rows="3"
-                              placeholder="Any extra details?"></textarea>
-                </div>
-
-                <button type="submit" class="btn btn-success">Add To-Do</button>
-            </form>
         </div>
-    </div>
 
-    <!-- To-do list -->
-    {% if todos %}
-        <ul class="list-group">
-        {% for item in todos %}
-            <li class="list-group-item d-flex justify-content-between align-items-center">
+        <!-- To-do list -->
+        {% if todos %}
+            <ul class="list-group shadow-sm">
 
-                <!-- LEFT SIDE: Title + description -->
-                <div>
-                    {% if item.completed %}
-                        <span class="text-success">✅ <strong>{{ item.title }}</strong></span>
-                    {% else %}
-                        <span>⬜ <strong>{{ item.title }}</strong></span>
-                    {% endif %}
+            {% for item in todos %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
 
-                    {% if item.description %}
-                        <span class="text-muted"> – {{ item.description }}</span>
-                    {% endif %}
-                </div>
+                    <!-- LEFT SIDE -->
+                    <div>
+                        {% if item.completed %}
+                            <span class="text-success">✅ <strong>{{ item.title }}</strong></span>
+                        {% else %}
+                            <span>⬜ <strong>{{ item.title }}</strong></span>
+                        {% endif %}
 
-                <!-- RIGHT SIDE: Buttons -->
-                <div class="btn-group">
+                        {% if item.description %}
+                            <span class="text-muted"> – {{ item.description }}</span>
+                        {% endif %}
+                    </div>
 
-                    {% if item.completed %}
-                        <a href="{% url 'todo_complete' item.id %}"
-                           class="btn btn-warning btn-sm">
-                            Mark incomplete
+                    <!-- RIGHT SIDE BUTTONS -->
+                    <div class="btn-group">
+
+                        {% if item.completed %}
+                            <a href="{% url 'todo_complete' item.id %}"
+                               class="btn btn-warning btn-sm">
+                                Mark incomplete
+                            </a>
+                        {% else %}
+                            <a href="{% url 'todo_complete' item.id %}"
+                               class="btn btn-success btn-sm">
+                                Mark complete
+                            </a>
+                        {% endif %}
+
+                        <a href="{% url 'todo_edit' item.id %}" class="btn btn-secondary btn-sm">
+                            Edit
                         </a>
-                    {% else %}
-                        <a href="{% url 'todo_complete' item.id %}"
-                           class="btn btn-success btn-sm">
-                            Mark complete
+
+                        <a href="{% url 'todo_delete' item.id %}" class="btn btn-danger btn-sm">
+                            Delete
                         </a>
-                    {% endif %}
 
-                    <a href="{% url 'todo_edit' item.id %}" class="btn btn-secondary btn-sm">
-                        Edit
-                    </a>
+                    </div>
 
-                    <a href="{% url 'todo_delete' item.id %}" class="btn btn-danger btn-sm">
-                        Delete
-                    </a>
+                </li>
+            {% endfor %}
 
-                </div>
+            </ul>
 
-            </li>
-        {% endfor %}
-        </ul>
+        {% else %}
+            <p class="text-muted mt-3">No to-dos yet. Add one above!</p>
+        {% endif %}
 
-    {% else %}
-        <p class="text-muted">No to-dos yet. Add one above!</p>
-    {% endif %}
+    </div> <!-- inner wrapper -->
 
-</div> <!-- end container -->
+</div> <!-- outer container-fluid -->
 
 </body>
 </html>

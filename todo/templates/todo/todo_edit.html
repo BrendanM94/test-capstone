@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Edit Task</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
@@ -9,38 +10,55 @@
 </head>
 <body class="bg-light">
 
-<div class="container mt-5" style="max-width: 600px;">
+<!-- OUTER: full width on mobile -->
+<div class="container-fluid mt-5">
 
-    <div class="card shadow">
-        <div class="card-body">
+    <!-- INNER: centered on desktop, full width on mobile -->
+    <div class="mx-auto" style="max-width: 600px; width: 100%;">
 
-            <h3 class="mb-4 text-center">Edit Task</h3>
+        <div class="card shadow-sm">
+            <div class="card-body">
 
-            <form method="post">
-                {% csrf_token %}
+                <h3 class="mb-4 text-center">Edit Task</h3>
 
-                <div class="mb-3">
-                    <label class="form-label">Title</label>
-                    <input type="text" name="title" class="form-control"
-                           value="{{ todo.title }}" required>
-                </div>
+                <form method="post">
+                    {% csrf_token %}
 
-                <div class="mb-3">
-                    <label class="form-label">Description</label>
-                    <textarea name="description" class="form-control" rows="4">{{ todo.description }}</textarea>
-                </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="id_title">Title</label>
+                        <input
+                            id="id_title"
+                            type="text"
+                            name="title"
+                            class="form-control"
+                            value="{{ todo.title }}"
+                            required>
+                    </div>
 
-                <button type="submit" class="btn btn-primary w-100">Save Changes</button>
-            </form>
+                    <div class="mb-3">
+                        <label class="form-label" for="id_description">Description</label>
+                        <textarea
+                            id="id_description"
+                            name="description"
+                            class="form-control"
+                            rows="4">{{ todo.description }}</textarea>
+                    </div>
 
-            <a href="{% url 'todo_list' %}" class="btn btn-link w-100 mt-3">
-                Cancel
-            </a>
+                    <button type="submit" class="btn btn-primary w-100">
+                        Save Changes
+                    </button>
+                </form>
 
+                <a href="{% url 'todo_list' %}" class="btn btn-link w-100 mt-3">
+                    Cancel
+                </a>
+
+            </div>
         </div>
-    </div>
 
-</div>
+    </div> <!-- inner wrapper -->
+
+</div> <!-- outer container-fluid -->
 
 </body>
 </html>
